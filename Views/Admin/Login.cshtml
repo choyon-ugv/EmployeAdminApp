@@ -1,23 +1,76 @@
 ﻿@model EmployeeAdminApp.Models.Admin
 
-<h2>Admin Login</h2>
-
-<form asp-action="Login" method="post">
-    <div>
-        <label asp-for="Username"></label>
-        <input asp-for="Username" class="form-control" />
-        <span asp-validation-for="Username" class="text-danger"></span>
-    </div>
-    <div>
-        <label asp-for="Password"></label>
-        <input asp-for="Password" class="form-control" type="password" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
-
-@if (!string.IsNullOrEmpty(ViewData["Error"] as string))
-{
-    <p class="text-danger">@ViewData["Error"]</p>
+@{
+    Layout = "_Layout";  // Use the common layout for consistency
 }
+
+@section Title
+{
+    Admin Login
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Admin Login</h2>
+
+    <form asp-action="Login" method="post" class="needs-validation" novalidate>
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @TempData["ErrorMessage"]
+            </div>
+        }
+
+        <div class="form-group mb-3">
+            <label for="Username">Username</label>
+            <input type="text" class="form-control" id="Username" asp-for="Username" placeholder="Enter your username" required />
+            <div class="invalid-feedback">
+                Please enter your username.
+            </div>
+            <span asp-validation-for="Username" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" id="Password" asp-for="Password" placeholder="Enter your password" required />
+            <div class="invalid-feedback">
+                Please enter your password.
+            </div>
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" id="Email" asp-for="Email" placeholder="Enter your email" required />
+            <div class="invalid-feedback">
+                Please enter your email.
+            </div>
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.js"></script>
+    <script>
+        // Enable Bootstrap form validation
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+}
+
 

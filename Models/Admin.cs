@@ -7,16 +7,16 @@ namespace EmployeeAdminApp.Models
         [Key]
         public int AdminId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Username is required.")]
         [StringLength(100)]
         public string Username { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password is required.")]
         [StringLength(100)]
         public string Password { get; set; }
 
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email format.")]
         public string Email { get; set; }
     }
 }

@@ -22,8 +22,9 @@ namespace EmployeeAdminApp.Controllers
         public IActionResult Login(Admin admin)
         {
             var existingAdmin = _context.Admins
-                .FirstOrDefault(a => a.Username.ToLower() == admin.Username.ToLower() &&
-                                     a.Password == admin.Password);
+                .FirstOrDefault(a => a.Username == admin.Username &&
+                                 a.Password == admin.Password &&
+                                 a.Email == admin.Email);
 
             if (existingAdmin != null)
             {

@@ -51,33 +51,46 @@ namespace EmployeeAdminApp.Controllers
             return View(employee);
         }
 
+        // GET: Employee/Edit/{id}
         public IActionResult Edit(int id)
         {
-            if (!IsAdminAuthenticated())
-                return RedirectToAction("Login", "Admin");
-
             var employee = _context.Employees.Find(id);
+
             if (employee == null)
+            {
                 return NotFound();
+            }
 
             return View(employee);
         }
 
+        // POST: Employee/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(Employee employee)
         {
-            if (!IsAdminAuthenticated())
-                return RedirectToAction("Login", "Admin");
-
             if (ModelState.IsValid)
             {
-                _context.Employees.Update(employee);
+                var existingEmployee = _context.Employees.FirstOrDefault(e => e.Id == employee.Id);
+
+                if (existingEmployee == null)
+                {
+                    return NotFound();
+                }
+
+                existingEmployee.FirstName = employee.FirstName;
+                existingEmployee.LastName = employee.LastName;
+                existingEmployee.Position = employee.Position;
+                existingEmployee.Salary = employee.Salary;
+
                 _context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
-            return View(employee);
+
+            return View(employee);  // Return the same view if validation fails
         }
+
 
         public IActionResult Delete(int id)
         {
